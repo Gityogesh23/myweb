@@ -6,3 +6,11 @@ COPY target/myweb*.war /usr/local/tomcat/webapps/myweb.war
 
 # Git webhook trigger demo
 # TO test github push trigger
+
+# This uses:
+
+# Tomcat 8.5 (still maintained)
+
+# JDK 8 (supported)
+
+# Docker manifest V2 (required)
