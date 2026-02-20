@@ -1,10 +1,25 @@
-FROM tomcat:10jdk17-alpine
+FROM maven-3.8-eclipse-temurin-8 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package
 
+FROM tomcat:9.0-jre8-temurin
 RUN rm -rf /usr/local/tomcat/webapps/*
+COPY --from=build /app/target/myweb.war
+                  /usr/local/tomcat/webapps/ROOT.war
 
-COPY target/myweb.war /usr/local/tomcat/webapps/myweb.war
 
-EXPOSE 8080
+                  
+
+
+# FROM tomcat:10jdk17-alpine
+
+# RUN rm -rf /usr/local/tomcat/webapps/*
+
+# COPY target/myweb.war /usr/local/tomcat/webapps/myweb.war
+
+# EXPOSE 8080
 
 
 #choose docker image as per pom.xml -->tomact:9-->compatible with javax.servlet -->see in groupID tag and jdk8 or 17 as per requirement in pom.xml
