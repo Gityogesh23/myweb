@@ -1,15 +1,28 @@
-FROM maven:3.8-eclipse-temurin-8 AS build
+# FROM maven:3.8-eclipse-temurin-8 AS build
+# WORKDIR /app
+# COPY pom.xml .
+# COPY src ./src
+# RUN mvn clean package
+
+# FROM tomcat:9.0-jre8-temurin
+# RUN rm -rf /usr/local/tomcat/webapps/*
+# COPY --from=build /app/target/myweb.war
+#                   /usr/local/tomcat/webapps/ROOT.war
+
+# -------- BUILD STAGE --------
+FROM maven:3.8.0-eclipse-temurin-8 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
+# -------- RUNTIME STAGE --------
 FROM tomcat:9.0-jre8-temurin
 RUN rm -rf /usr/local/tomcat/webapps/*
-COPY --from=build /app/target/myweb.war
-                  /usr/local/tomcat/webapps/ROOT.war
+COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
-
+EXPOSE 8080
+CMD ["catalina.sh","run"]
                   
 
 
