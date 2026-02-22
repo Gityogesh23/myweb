@@ -10,7 +10,7 @@
 #                   /usr/local/tomcat/webapps/ROOT.war
 
 # -------- BUILD STAGE --------
-FROM maven:3.8.0-eclipse-temurin-8 AS build
+FROM maven:3.8-eclipse-temurin-8 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
